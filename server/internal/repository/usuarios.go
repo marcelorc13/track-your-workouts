@@ -19,7 +19,7 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 	results, err := r.DB.Query("SELECT id, nome_completo, username, email, senha FROM usuarios")
 
 	if err != nil {
-		return models.DBResponse{Success: true, Message: "Ocorreu um erro na query"}, err
+		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
 	}
 
 	defer results.Close()
@@ -56,4 +56,42 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 		return models.DBResponse{Message: err.Error()}, err
 	}
 	return models.DBResponse{Success: true, Message: fmt.Sprintf("Usuário de id %d encontrado", id), Data: user}, nil
+}
+func (r *UserRepository) DeleteUsuario(id int) (models.DBResponse, error) {
+	res, err := r.DB.Exec("DELETE FROM usuarios WHERE id = ?", id)
+	if err != nil {
+		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
+	}
+
+	if rows != 1 {
+		return models.DBResponse{Message: "Não existe usuário com esse id"}, nil
+	}
+
+	return models.DBResponse{Success: true, Message: "Usuario deletado com sucesso"}, nil
+}
+
+func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, error) {
+	res, err := r.DB.Exec(`
+		INSERT INTO usuarios(nome_completo, username, email, senha)
+		VALUES(?, ?, ?, ?);
+	`, u.NomeCompleto, u.Username, u.Email, u.Senha)
+
+	if err != nil {
+		return models.DBResponse{Message: "Erro ao criar usuario"}, err
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
+	}
+
+	if rows != 1 {
+		return models.DBResponse{Message: "Erro ao criar usuario"}, nil
+	}
+
+	return models.DBResponse{Success: true, Message: "Usuário criado com sucesso", Data: rows}, nil
 }
