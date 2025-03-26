@@ -1,8 +1,7 @@
 package models
 
-type Response struct {
-	Sucesso  bool
-	Status   int
-	Mensagem string
-	Data     any
+type DBResponse struct {
+	Success bool
+	Message string
+	Data    any
 }

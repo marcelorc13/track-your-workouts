@@ -18,7 +18,7 @@ func main() {
 	}
 	fmt.Println(usuarios)
 
-	usuario, err := treinoRepo.GetUsuario(1)
+	usuario, err := treinoRepo.GetUsuario(2)
 	if err != nil {
 		fmt.Println(err)
 	}

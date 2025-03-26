@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"server/internal/models"
 )
 
@@ -13,12 +14,12 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{db}
 }
 
-func (r *UserRepository) GetUsuarios() (models.Response, error) {
+func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 
 	results, err := r.DB.Query("SELECT id, nome_completo, username, email, senha FROM usuarios")
 
 	if err != nil {
-		return models.Response{Sucesso: true, Status: 500, Mensagem: "Ocorreu um erro na query"}, err
+		return models.DBResponse{Success: true, Message: "Ocorreu um erro na query"}, err
 	}
 
 	defer results.Close()
@@ -38,21 +39,21 @@ func (r *UserRepository) GetUsuarios() (models.Response, error) {
 	}
 
 	if len(res) == 0 {
-		return models.Response{Sucesso: true, Status: 404, Mensagem: "O banco ainda não possui usuários"}, nil
+		return models.DBResponse{Success: true, Message: "O banco ainda não possui usuários"}, nil
 	}
 
-	return models.Response{Sucesso: true, Status: 200, Mensagem: "Lista de todos os usuários do banco", Data: res}, nil
+	return models.DBResponse{Success: true, Message: "Lista de todos os usuários do banco", Data: res}, nil
 }
-func (r *UserRepository) GetUsuario(id int) (models.Response, error) {
+func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	var user models.Usuario
 
 	err := r.DB.QueryRow("SELECT id, nome_completo, username, email, senha FROM usuarios WHERE id = ?", id).
 		Scan(&user.ID, &user.NomeCompleto, &user.Username, &user.Email, &user.Senha)
 
 	if err == sql.ErrNoRows {
-		return models.Response{Status: 404, Mensagem: "Usuário não encontrado"}, err
+		return models.DBResponse{Message: "Usuário não encontrado"}, err
 	} else if err != nil {
-		return models.Response{Status: 500, Mensagem: err.Error()}, err
+		return models.DBResponse{Message: err.Error()}, err
 	}
-	return models.Response{Sucesso: true, Status: 200, Mensagem: "Usuário de id" + string(rune(id)) + " encontrado", Data: user}, nil
+	return models.DBResponse{Success: true, Message: fmt.Sprintf("Usuário de id %d encontrado", id), Data: user}, nil
 }
