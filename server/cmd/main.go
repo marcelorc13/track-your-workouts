@@ -2,38 +2,25 @@ package main
 
 import (
 	"fmt"
-	"server/internal/models"
+	"server/internal/repository"
+	"server/pkg/database"
 )
 
 func main() {
-	var exercicios []models.Exercicio
+	db := database.ConnectDB()
+	defer db.Close()
 
-	e1 := models.Exercicio{
-		Nome:   "Supino Inclinado com Halteres",
-		Series: 2,
-	}
-	e2 := models.Exercicio{
-		Nome:   "Rosca Direta Livre na Barra W",
-		Series: 2,
-	}
-	e3 := models.Exercicio{
-		Nome:   "Tríceps Testa Livre na Barra W",
-		Series: 2,
-	}
+	treinoRepo := repository.NewUserRepository(db)
 
-	exercicios = append(exercicios, e1, e2, e3)
-
-	treino := models.Treino{
-		Nome:       "Upper I",
-		Exercicios: exercicios,
+	usuarios, err := treinoRepo.GetUsuarios()
+	if err != nil {
+		fmt.Println(err)
 	}
+	fmt.Println(usuarios)
 
-	fmt.Println(treino.Nome)
-	fmt.Println("N de Exercicios", len(treino.Exercicios))
-
-	for _, e := range exercicios {
-		fmt.Println()
-		fmt.Println("Exercicio:", e.Nome)
-		fmt.Println("Séries Válidas:", e.Series)
+	usuario, err := treinoRepo.GetUsuario(1)
+	if err != nil {
+		fmt.Println(err)
 	}
+	fmt.Println(usuario)
 }
