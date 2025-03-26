@@ -22,7 +22,7 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
 	}
 
-	defer results.Close()
+	defer r.DB.Close()
 
 	res := []models.Usuario{}
 
@@ -50,6 +50,8 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	err := r.DB.QueryRow("SELECT id, nome_completo, username, email, senha FROM usuarios WHERE id = ?", id).
 		Scan(&user.ID, &user.NomeCompleto, &user.Username, &user.Email, &user.Senha)
 
+	defer r.DB.Close()
+
 	if err == sql.ErrNoRows {
 		return models.DBResponse{Message: "Usuário não encontrado"}, err
 	} else if err != nil {
@@ -59,6 +61,9 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 }
 func (r *UserRepository) DeleteUsuario(id int) (models.DBResponse, error) {
 	res, err := r.DB.Exec("DELETE FROM usuarios WHERE id = ?", id)
+
+	defer r.DB.Close()
+
 	if err != nil {
 		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
 	}
@@ -81,6 +86,8 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 		VALUES(?, ?, ?, ?);
 	`, u.NomeCompleto, u.Username, u.Email, u.Senha)
 
+	defer r.DB.Close()
+
 	if err != nil {
 		return models.DBResponse{Message: "Erro ao criar usuario"}, err
 	}
@@ -93,5 +100,7 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 		return models.DBResponse{Message: "Erro ao criar usuario"}, nil
 	}
 
-	return models.DBResponse{Success: true, Message: "Usuário criado com sucesso", Data: rows}, nil
+	insertID, _ := res.LastInsertId()
+
+	return models.DBResponse{Success: true, Message: fmt.Sprintf("Usuário com id %d criado", insertID)}, nil
 }
