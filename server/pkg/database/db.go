@@ -16,7 +16,7 @@ func ConnectDB() *sql.DB {
 	endereco := os.Getenv("MYSQL_ADDRESS")
 	database := os.Getenv("MYSQL_DB")
 
-	// dsn := "marcelo:162435@tcp(127.0.0.1:3306)/teste"
+	// dsn := "user:pass@tcp(127.0.0.1:3306)/teste"
 	dsn := usuario + ":" + senha + "@tcp(" + endereco + ")/" + database
 
 	db, err := sql.Open("mysql", dsn)

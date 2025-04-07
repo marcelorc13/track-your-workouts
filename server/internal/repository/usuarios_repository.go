@@ -39,7 +39,7 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 	}
 
 	if len(res) == 0 {
-		return models.DBResponse{Success: true, Message: "O banco ainda não possui usuários"}, nil
+		return models.DBResponse{Message: "O banco ainda não possui usuários"}, nil
 	}
 
 	return models.DBResponse{Success: true, Message: "Lista de todos os usuários do banco", Data: res}, nil
@@ -91,6 +91,7 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 	if err != nil {
 		return models.DBResponse{Message: "Erro ao criar usuario"}, err
 	}
+
 	rows, err := res.RowsAffected()
 	if err != nil {
 		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
