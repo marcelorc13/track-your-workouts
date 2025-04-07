@@ -53,7 +53,7 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	defer r.DB.Close()
 
 	if err == sql.ErrNoRows {
-		return models.DBResponse{Message: "Usuário não encontrado"}, err
+		return models.DBResponse{Message: "Usuário não encontrado"}, fmt.Errorf("usuário não encontrado")
 	} else if err != nil {
 		return models.DBResponse{Message: err.Error()}, err
 	}
