@@ -22,8 +22,6 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
 	}
 
-	defer r.DB.Close()
-
 	res := []models.Usuario{}
 
 	for results.Next() {
@@ -50,8 +48,6 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	err := r.DB.QueryRow("SELECT id, nome_completo, username, email, senha FROM usuarios WHERE id = ?", id).
 		Scan(&user.ID, &user.NomeCompleto, &user.Username, &user.Email, &user.Senha)
 
-	defer r.DB.Close()
-
 	if err == sql.ErrNoRows {
 		return models.DBResponse{Message: "Usuário não encontrado"}, fmt.Errorf("usuário não encontrado")
 	} else if err != nil {
@@ -61,8 +57,6 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 }
 func (r *UserRepository) DeleteUsuario(id int) (models.DBResponse, error) {
 	res, err := r.DB.Exec("DELETE FROM usuarios WHERE id = ?", id)
-
-	defer r.DB.Close()
 
 	if err != nil {
 		return models.DBResponse{Message: "Ocorreu um erro na query"}, err
@@ -85,8 +79,6 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 		INSERT INTO usuarios(nome_completo, username, email, senha)
 		VALUES(?, ?, ?, ?);
 	`, u.NomeCompleto, u.Username, u.Email, u.Senha)
-
-	defer r.DB.Close()
 
 	if err != nil {
 		return models.DBResponse{Message: "Erro ao criar usuario"}, err
