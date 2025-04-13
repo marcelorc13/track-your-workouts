@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"server/internal/models"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserRepository struct {
@@ -75,10 +77,16 @@ func (r *UserRepository) DeleteUsuario(id int) (models.DBResponse, error) {
 }
 
 func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, error) {
+	senhaBytes, err := bcrypt.GenerateFromPassword([]byte(u.Senha), 14)
+
+	if err != nil {
+		return models.DBResponse{Message: "Erro ao hashear senha"}, err
+	}
+
 	res, err := r.DB.Exec(`
 		INSERT INTO usuarios(nome_completo, username, email, senha)
 		VALUES(?, ?, ?, ?);
-	`, u.NomeCompleto, u.Username, u.Email, u.Senha)
+	`, u.NomeCompleto, u.Username, u.Email, string(senhaBytes))
 
 	if err != nil {
 		return models.DBResponse{Message: "Erro ao criar usuario"}, err
