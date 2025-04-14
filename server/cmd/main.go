@@ -20,9 +20,9 @@ func main() {
 	userRepo := repository.NewUserRepository(db)
 	userServ := service.NewUserService(*userRepo)
 	userHand := handler.NewUserHandler(*userServ)
+	routHand := routes.NewRouteHandler(*userHand)
 
-	router.GET("usuarios/", userHand.GetUsuarios)
-	router.GET("usuarios/:id", userHand.GetUsuario)
+	routHand.UserRoutes(router)
 
 	r.Start()
 }
