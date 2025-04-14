@@ -19,4 +19,5 @@ func (rh RouteHandler) UserRoutes(r *gin.Engine) {
 	r.GET("usuarios/:id", rh.handler.GetUsuario)
 	r.DELETE("usuarios/:id", rh.handler.DeleteUsuario)
 	r.POST("usuarios/", rh.handler.CreateUsuario)
+	r.POST("usuarios/login", rh.handler.Login)
 }

@@ -96,3 +96,23 @@ func (us UserService) CreateUsuario(u models.Usuario) (*string, error) {
 
 	return &res.Message, nil
 }
+
+func (us UserService) Login(u models.LoginUsuario) (*string, error) {
+	validate := validator.New()
+	err := validate.Struct(u)
+	if err != nil {
+		return nil, err.(validator.ValidationErrors)
+	}
+
+	res, err := us.repository.Login(u)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !res.Success {
+		return nil, &responseError{res.Message}
+	}
+
+	return &res.Message, nil
+}

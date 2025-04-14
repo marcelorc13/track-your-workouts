@@ -44,6 +44,7 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 
 	return models.DBResponse{Success: true, Message: "Lista de todos os usuários do banco", Data: res}, nil
 }
+
 func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	var user models.Usuario
 
@@ -57,6 +58,7 @@ func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
 	}
 	return models.DBResponse{Success: true, Message: fmt.Sprintf("Usuário de id %d encontrado", id), Data: user}, nil
 }
+
 func (r *UserRepository) DeleteUsuario(id int) (models.DBResponse, error) {
 	res, err := r.DB.Exec("DELETE FROM usuarios WHERE id = ?", id)
 
@@ -104,4 +106,23 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 	insertID, _ := res.LastInsertId()
 
 	return models.DBResponse{Success: true, Message: fmt.Sprintf("Usuário com id %d criado", insertID)}, nil
+}
+
+func (r *UserRepository) Login(u models.LoginUsuario) (models.DBResponse, error) {
+	var usuario models.LoginUsuario
+	err := r.DB.QueryRow("SELECT email, senha FROM usuarios WHERE email = ?", u.Email).
+		Scan(&usuario.Email, &usuario.Senha)
+
+	if err == sql.ErrNoRows {
+		return models.DBResponse{Message: "Usuário não encontrado"}, fmt.Errorf("usuário não encontrado")
+	} else if err != nil {
+		return models.DBResponse{Message: err.Error()}, err
+	}
+
+	errSenha := bcrypt.CompareHashAndPassword([]byte(usuario.Senha), []byte(u.Senha))
+
+	if errSenha != nil {
+		return models.DBResponse{Message: "Senha incorreta"}, fmt.Errorf("senha incorreta")
+	}
+	return models.DBResponse{Success: true, Message: "Login efetuado com sucesso"}, nil
 }
