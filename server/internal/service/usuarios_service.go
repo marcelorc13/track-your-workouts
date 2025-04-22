@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"server/internal/models"
 	"server/internal/repository"
 
@@ -9,14 +10,6 @@ import (
 
 type UserService struct {
 	repository repository.UserRepository
-}
-
-type responseError struct {
-	message string
-}
-
-func (e *responseError) Error() string {
-	return e.message
 }
 
 func NewUserService(userRepository repository.UserRepository) *UserService {
@@ -31,13 +24,13 @@ func (us UserService) GetUsuarios() (*[]models.Usuario, error) {
 	}
 
 	if !res.Success {
-		return nil, &responseError{res.Message}
+		return nil, nil
 	}
 
 	usuarios, ok := res.Data.([]models.Usuario)
 
 	if !ok {
-		return nil, &responseError{"Erro ao converter dados"}
+		return nil, fmt.Errorf("erro ao converter dados")
 	}
 
 	return &usuarios, nil
@@ -51,68 +44,68 @@ func (us UserService) GetUsuario(id int) (*models.Usuario, error) {
 	}
 
 	if !res.Success {
-		return nil, &responseError{res.Message}
+		return nil, nil
 	}
 
 	usuario, ok := res.Data.(models.Usuario)
 
 	if !ok {
-		return nil, &responseError{"Erro ao converter dados"}
+		return nil, fmt.Errorf("erro ao converter dados")
 	}
 
 	return &usuario, nil
 }
 
-func (us UserService) DeleteUsuario(id int) (*string, error) {
+func (us UserService) DeleteUsuario(id int) error {
 	res, err := us.repository.DeleteUsuario(id)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if !res.Success {
-		return nil, &responseError{res.Message}
+		return fmt.Errorf(res.Message)
 	}
 
-	return &res.Message, nil
+	return nil
 }
 
-func (us UserService) CreateUsuario(u models.Usuario) (*string, error) {
+func (us UserService) CreateUsuario(u models.Usuario) error {
 	validate := validator.New()
 	err := validate.Struct(u)
 	if err != nil {
-		return nil, err.(validator.ValidationErrors)
+		return err.(validator.ValidationErrors)
 	}
 
 	res, err := us.repository.CreateUsuario(u)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if !res.Success {
-		return nil, &responseError{res.Message}
+		return fmt.Errorf(res.Message)
 	}
 
-	return &res.Message, nil
+	return nil
 }
 
-func (us UserService) Login(u models.LoginUsuario) (*string, error) {
+func (us UserService) Login(u models.LoginUsuario) error {
 	validate := validator.New()
 	err := validate.Struct(u)
 	if err != nil {
-		return nil, err.(validator.ValidationErrors)
+		return err.(validator.ValidationErrors)
 	}
 
 	res, err := us.repository.Login(u)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if !res.Success {
-		return nil, &responseError{res.Message}
+		return fmt.Errorf(res.Message)
 	}
 
-	return &res.Message, nil
+	return nil
 }

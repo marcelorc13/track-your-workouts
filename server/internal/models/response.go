@@ -8,8 +8,8 @@ type (
 	}
 
 	HttpResponse struct {
-		Status  int
-		Message string
-		Data    any
+		Status  int    `json:"status"`
+		Message string `json:"message"`
+		Data    any    `json:"data,omitempty"`
 	}
 )
