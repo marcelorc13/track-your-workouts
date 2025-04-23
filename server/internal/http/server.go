@@ -2,8 +2,10 @@ package httpServer
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 type Router struct {
@@ -15,5 +17,7 @@ func NewRouter(r *gin.Engine) *Router {
 }
 
 func (r Router) Start() {
-	http.ListenAndServe(":8080", r.router)
+	godotenv.Load()
+	port := os.Getenv("PORT")
+	http.ListenAndServe(port, r.router)
 }
