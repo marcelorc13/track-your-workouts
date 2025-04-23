@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func ConnectDB() *sql.DB {
+func ConnectMySQL() *sql.DB {
 	godotenv.Load()
 
 	usuario := os.Getenv("MYSQL_USER")

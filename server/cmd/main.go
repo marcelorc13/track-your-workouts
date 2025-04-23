@@ -14,7 +14,7 @@ func main() {
 
 	r := httpServer.NewRouter(router)
 
-	db := database.ConnectDB()
+	db := database.ConnectMySQL()
 	defer db.Close()
 
 	userRepo := repository.NewUserRepository(db)
