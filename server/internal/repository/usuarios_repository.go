@@ -85,9 +85,9 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 	}
 
 	res, err := r.DB.Exec(`
-		INSERT INTO usuarios(nome_completo, username, email, senha)
-		VALUES(?, ?, ?, ?);
-	`, u.NomeCompleto, u.Username, u.Email, string(senhaBytes))
+		INSERT INTO usuarios(id, nome_completo, username, email, senha)
+		VALUES(?, ?, ?, ?, ?);
+	`, u.ID, u.NomeCompleto, u.Username, u.Email, string(senhaBytes))
 
 	if err != nil {
 		return models.DBResponse{Message: "erro ao criar usuario"}, err

@@ -6,6 +6,7 @@ import (
 	"server/internal/repository"
 
 	"github.com/go-playground/validator"
+	"github.com/google/uuid"
 )
 
 type UserService struct {
@@ -72,6 +73,7 @@ func (us UserService) DeleteUsuario(id int) error {
 
 func (us UserService) CreateUsuario(u models.Usuario) error {
 	validate := validator.New()
+	u.ID = uuid.New()
 	err := validate.Struct(u)
 	if err != nil {
 		return err.(validator.ValidationErrors)
