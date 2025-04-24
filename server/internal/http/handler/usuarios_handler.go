@@ -95,7 +95,7 @@ func (h UserHandler) Login(c *gin.Context) {
 	var usuario models.LoginUsuario
 
 	if err := c.BindJSON(&usuario); err != nil {
-		c.JSON(500, err.Error())
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 	}
 
 	err := h.service.Login(usuario)
