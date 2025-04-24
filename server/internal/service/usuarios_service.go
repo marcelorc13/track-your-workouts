@@ -37,7 +37,7 @@ func (us UserService) GetUsuarios() (*[]models.Usuario, error) {
 	return &usuarios, nil
 }
 
-func (us UserService) GetUsuario(id int) (*models.Usuario, error) {
+func (us UserService) GetUsuario(id string) (*models.Usuario, error) {
 	res, err := us.repository.GetUsuario(id)
 
 	if err != nil {

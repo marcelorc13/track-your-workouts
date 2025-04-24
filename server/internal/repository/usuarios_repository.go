@@ -44,7 +44,7 @@ func (r *UserRepository) GetUsuarios() (models.DBResponse, error) {
 	return models.DBResponse{Success: true, Data: res}, nil
 }
 
-func (r *UserRepository) GetUsuario(id int) (models.DBResponse, error) {
+func (r *UserRepository) GetUsuario(id string) (models.DBResponse, error) {
 	var user models.Usuario
 
 	err := r.DB.QueryRow("SELECT id, nome_completo, username, email, senha FROM usuarios WHERE id = ?", id).

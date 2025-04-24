@@ -36,14 +36,7 @@ func (h UserHandler) GetUsuarios(c *gin.Context) {
 func (h UserHandler) GetUsuario(c *gin.Context) {
 	id := c.Param("id")
 
-	convertId, err := strconv.Atoi(id)
-
-	if err != nil {
-		c.JSON(400, models.HttpResponse{Status: http.StatusBadGateway, Message: "Erro ao converter número de id para inteiro"})
-		return
-	}
-
-	res, err := h.service.GetUsuario(convertId)
+	res, err := h.service.GetUsuario(id)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
@@ -55,7 +48,7 @@ func (h UserHandler) GetUsuario(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Usuário de id %d encontrado", convertId), Data: res})
+	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Usuário de id %s encontrado", id), Data: res})
 }
 
 func (h UserHandler) DeleteUsuario(c *gin.Context) {
