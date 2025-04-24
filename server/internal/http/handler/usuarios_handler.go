@@ -109,7 +109,7 @@ func (h UserHandler) Login(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Senha incorreta"})
 			return
 		}
-		c.JSON(http.StatusNotFound, models.HttpResponse{Status: http.StatusNotFound, Message: err.Error()})
+		c.JSON(http.StatusNotFound, models.HttpResponse{Status: http.StatusNotFound, Message: "Usuário ou senha incorreta"})
 		return
 	}
 

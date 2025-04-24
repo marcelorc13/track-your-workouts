@@ -7,18 +7,21 @@ import (
 )
 
 type RouteHandler struct {
-	handler handler.UserHandler
-	router  *gin.Engine
+	router *gin.Engine
 }
 
-func NewRouteHandler(uh handler.UserHandler, r *gin.Engine) *RouteHandler {
-	return &RouteHandler{uh, r}
+func NewRouteHandler(r *gin.Engine) *RouteHandler {
+	return &RouteHandler{r}
 }
 
-func (rh RouteHandler) UserRoutes() {
-	rh.router.GET("usuarios/", rh.handler.GetUsuarios)
-	rh.router.GET("usuarios/:id", rh.handler.GetUsuario)
-	rh.router.DELETE("usuarios/:id", rh.handler.DeleteUsuario)
-	rh.router.POST("usuarios/", rh.handler.CreateUsuario)
-	rh.router.POST("usuarios/login", rh.handler.Login)
+func (rh RouteHandler) UserRoutes(uh handler.UserHandler) {
+	rh.router.GET("usuarios/", uh.GetUsuarios)
+	rh.router.GET("usuarios/:id", uh.GetUsuario)
+	rh.router.DELETE("usuarios/:id", uh.DeleteUsuario)
+	rh.router.POST("usuarios/", uh.CreateUsuario)
+	rh.router.POST("usuarios/login", uh.Login)
+}
+
+func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
+	rh.router.POST("treinos/", th.CreateTreino)
 }

@@ -15,18 +15,22 @@ func main() {
 	r := httpServer.NewRouter(router)
 
 	mysqlDB := database.ConnectMySQL()
-	// mongoDB := database.ConnectMongo()
+	mongoDB := database.ConnectMongo()
 
 	defer mysqlDB.Close()
+
+	routHand := routes.NewRouteHandler(router)
 
 	userRepo := repository.NewUserRepository(mysqlDB)
 	userServ := service.NewUserService(*userRepo)
 	userHand := handler.NewUserHandler(*userServ)
-	routHand := routes.NewRouteHandler(*userHand, router)
 
-	// treinoRepo := repository.NewTreinoRepository(mongoDB)
+	treinoRepo := repository.NewTreinoRepository(mongoDB)
+	treinoServ := service.NewTreinoService(*treinoRepo)
+	treinoHand := handler.NewTreinoHandler(*treinoServ)
 
-	routHand.UserRoutes()
+	routHand.UserRoutes(*userHand)
+	routHand.TreinoRoutes(*treinoHand)
 
 	r.Start()
 }
