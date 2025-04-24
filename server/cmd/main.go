@@ -22,10 +22,11 @@ func main() {
 	userRepo := repository.NewUserRepository(mysqlDB)
 	userServ := service.NewUserService(*userRepo)
 	userHand := handler.NewUserHandler(*userServ)
-	routHand := routes.NewRouteHandler(*userHand)
+	routHand := routes.NewRouteHandler(*userHand, router)
 
-	routHand.UserRoutes(router)
+	// treinoRepo := repository.NewTreinoRepository(mongoDB)
+
+	routHand.UserRoutes()
 
 	r.Start()
-
 }
