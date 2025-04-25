@@ -35,3 +35,16 @@ func (ts TreinoService) CreateTreino(t models.Treino) error {
 
 	return nil
 }
+
+func (ts TreinoService) GetTreinos() (*[]models.Treino, error) {
+	res, err := ts.repository.GetTreinos()
+	if err != nil {
+		return nil, err
+	}
+	treinos, ok := res.Data.([]models.Treino)
+	if !ok {
+		return nil, fmt.Errorf("erro ao converter dados")
+	}
+
+	return &treinos, nil
+}

@@ -24,4 +24,5 @@ func (rh RouteHandler) UserRoutes(uh handler.UserHandler) {
 
 func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
 	rh.router.POST("treinos/", th.CreateTreino)
+	rh.router.GET("treinos/", th.GetTreinos)
 }
