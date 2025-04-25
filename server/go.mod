@@ -5,6 +5,7 @@ go 1.23.6
 require github.com/go-playground/validator v9.31.0+incompatible
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 )

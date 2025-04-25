@@ -1,6 +1,7 @@
 package routes
 
 import (
+	httpServer "server/internal/http"
 	"server/internal/http/handler"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,9 @@ func (rh RouteHandler) UserRoutes(uh handler.UserHandler) {
 
 func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
 	treinos := rh.router.Group("treinos/")
+
+	treinos.Use(httpServer.Middleware)
+
 	treinos.POST("/", th.CreateTreino)
 	treinos.GET("/", th.GetTreinos)
 }
