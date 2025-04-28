@@ -3,15 +3,13 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"server/internal/models"
 	"server/internal/service"
+	"server/internal/utils"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 type UserHandler struct {
@@ -116,19 +114,11 @@ func (h UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	segredo := os.Getenv("JWT_SECRET")
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"email": usuario.Email,
-			"exp":   time.Now().Add(time.Hour * 24).Unix(),
-		})
-	tokenString, err := token.SignedString([]byte(segredo))
+	token, err := utils.GenerateJwtToken(usuario.Email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
-
 	}
 
-	c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
+	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: "Usuário logado com sucesso"})
 }
