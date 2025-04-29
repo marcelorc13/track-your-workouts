@@ -6,11 +6,11 @@ export const middleware = async (req: NextRequest) => {
 
     const token = req.cookies.get('token')
 
-    if (!token && urlAtual != '/login') {
+    if (!token && urlAtual != '/login' && urlAtual != '/cadastro') {
         return NextResponse.redirect(new URL('/login', req.url))
     }
 
-    if (urlAtual == '/login' && token) {
+    if ((urlAtual == '/login' || urlAtual == '/cadastro') && token) {
         const isValid = await verifyToken(token.value)
         if (!isValid) {
             req.cookies.clear()
