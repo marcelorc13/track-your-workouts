@@ -86,7 +86,7 @@ func (h UserHandler) CreateUsuario(c *gin.Context) {
 
 	err = h.service.CreateUsuario(usuario)
 	if err != nil {
-		c.JSON(http.StatusNotFound, models.HttpResponse{Status: http.StatusNotFound, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 		return
 	}
 
@@ -110,7 +110,7 @@ func (h UserHandler) Login(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Senha incorreta"})
 			return
 		}
-		c.JSON(http.StatusNotFound, models.HttpResponse{Status: http.StatusNotFound, Message: "Usuário ou senha incorreta"})
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Usuário ou senha incorreta"})
 		return
 	}
 
