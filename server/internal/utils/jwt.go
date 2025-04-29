@@ -32,3 +32,16 @@ func VerifyJwtToken(tokenString string) error {
 	}
 	return nil
 }
+
+func GetTokenClaims(tokenString string) (jwt.MapClaims, error) {
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (any, error) {
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return claims, nil
+}
