@@ -107,8 +107,8 @@ func (r *UserRepository) CreateUsuario(u models.Usuario) (models.DBResponse, err
 
 func (r *UserRepository) Login(u models.LoginUsuario) (models.DBResponse, error) {
 	var usuario models.LoginUsuario
-	err := r.DB.QueryRow("SELECT email, senha FROM usuarios WHERE email = ?", u.Email).
-		Scan(&usuario.Email, &usuario.Senha)
+	err := r.DB.QueryRow("SELECT id, email, senha FROM usuarios WHERE email = ?", u.Email).
+		Scan(&usuario.ID, &usuario.Email, &usuario.Senha)
 
 	if err == sql.ErrNoRows {
 		return models.DBResponse{Message: "usuário não encontrado"}, nil
@@ -121,5 +121,5 @@ func (r *UserRepository) Login(u models.LoginUsuario) (models.DBResponse, error)
 	if errSenha != nil {
 		return models.DBResponse{Message: "senha incorreta"}, nil
 	}
-	return models.DBResponse{Success: true}, nil
+	return models.DBResponse{Success: true, Data: usuario}, nil
 }

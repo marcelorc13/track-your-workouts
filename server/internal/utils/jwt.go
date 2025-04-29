@@ -7,13 +7,13 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateJwtToken(email string) (string, error) {
+func GenerateJwtToken(id string) (string, error) {
 	segredo := os.Getenv("JWT_SECRET")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"email": email,
-			"exp":   time.Now().Add(time.Hour * 1).Unix(),
+			"id":  id,
+			"exp": time.Now().Add(time.Hour * 1).Unix(),
 		})
 	tokenString, err := token.SignedString([]byte(segredo))
 	if err != nil {

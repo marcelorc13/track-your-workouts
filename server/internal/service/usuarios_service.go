@@ -92,22 +92,28 @@ func (us UserService) CreateUsuario(u models.Usuario) error {
 	return nil
 }
 
-func (us UserService) Login(u models.LoginUsuario) error {
-	validate := validator.New()
-	err := validate.Struct(u)
-	if err != nil {
-		return err.(validator.ValidationErrors)
-	}
+func (us UserService) Login(u models.LoginUsuario) (*models.LoginUsuario, error) {
+	// validate := validator.New()
+	// err := validate.Struct(u)
+	// if err != nil {
+	// 	return nil, err.(validator.ValidationErrors)
+	// }
 
 	res, err := us.repository.Login(u)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if !res.Success {
-		return fmt.Errorf(res.Message)
+		return nil, fmt.Errorf(res.Message)
 	}
 
-	return nil
+	usuario, ok := res.Data.(models.LoginUsuario)
+
+	if !ok {
+		return nil, fmt.Errorf("erro ao converter dados")
+	}
+
+	return &usuario, nil
 }

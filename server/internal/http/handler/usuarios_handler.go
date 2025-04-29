@@ -99,7 +99,7 @@ func (h UserHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 	}
 
-	err := h.service.Login(usuario)
+	u, err := h.service.Login(usuario)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "usuário não encontrado") {
@@ -114,7 +114,7 @@ func (h UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateJwtToken(usuario.Email)
+	token, err := utils.GenerateJwtToken(u.ID.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 	}

@@ -10,6 +10,7 @@ type Usuario struct {
 	Senha        string    `json:"senha" validate:"required,min=6,max=30"`
 }
 type LoginUsuario struct {
-	Email string `json:"email" validate:"required,email"`
-	Senha string `json:"senha" validate:"required,min=6,max=30"`
+	ID    uuid.UUID `json:"id"`
+	Email string    `json:"email" validate:"required,email"`
+	Senha string    `json:"senha" validate:"required,min=6,max=30"`
 }
