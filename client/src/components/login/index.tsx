@@ -1,10 +1,12 @@
 'use client'
 
+import { UseReload } from '@/hooks/useReload';
 import { loginUsuarioDTO, loginUsuarioSchema } from '@/schemas/usuarios';
-import { fetchTreinos } from '@/service/login';
+import { fetchTreinos } from '@/services/login';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 import toast from 'react-hot-toast';
 
 const LoginComponent: React.FC = () => {
@@ -19,6 +21,7 @@ const LoginComponent: React.FC = () => {
                 return
             }
             toast.success(data.message)
+            UseReload()
         },
         onError: (error) => {
             console.error('Erro no login', error);
@@ -40,7 +43,7 @@ const LoginComponent: React.FC = () => {
             <form onSubmit={handleSubmit(handleLogin)}>
                 <input {...register("email")} type="email" placeholder='Email' />
                 <input {...register("senha")} type={!verSenha ? "password" : "text"} placeholder='Senha' />
-                <span className='cursor-pointer' onClick={() => setVerSenha(prev => !prev)}>olho</span>
+                <span className='cursor-pointer' onClick={() => setVerSenha(prev => !prev)}>{verSenha ? <LuEye/> : <LuEyeClosed/>}</span>
                 <input type="submit" value={!isPending ? "Entrar" : "..."} />
             </form>
         </main>
