@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"server/internal/models"
 	"server/internal/service"
+	"server/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,6 +24,26 @@ func (th TreinoHandler) CreateTreino(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 		return
 	}
+
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Não possui token de autorização"})
+		return
+	}
+
+	claims, err := utils.GetTokenClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Token mal formado"})
+		return
+	}
+
+	userId, ok := claims["id"].(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Token mal formado"})
+		return
+	}
+
+	treino.CriadoPor = userId
 
 	err = th.service.CreateTreino(treino)
 
