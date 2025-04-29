@@ -1,6 +1,6 @@
 import { FetchResponseType } from "@/models/response-models"
 
-export const fetchTreinos = async (usuario: {email: string, senha: string}) =>  {
+export const fetchLogin = async (usuario: {email: string, senha: string}) =>  {
     const response = await fetch("http://localhost:8080/usuarios/login", {
         method: "POST", 
         headers: {

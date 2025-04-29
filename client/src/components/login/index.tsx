@@ -2,7 +2,7 @@
 
 import { UseReload } from '@/hooks/useReload';
 import { loginUsuarioDTO, loginUsuarioSchema } from '@/schemas/usuarios';
-import { fetchTreinos } from '@/services/login';
+import { fetchLogin } from '@/services/login';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ const LoginComponent: React.FC = () => {
     const { register, handleSubmit } = useForm<loginUsuarioDTO>()
 
     const { mutate, isPending } = useMutation({
-        mutationFn: fetchTreinos,
+        mutationFn: fetchLogin,
         onSuccess: (data) => {
             if (data.status != 200) {
                 toast.error(data.message)
