@@ -7,10 +7,20 @@ import (
 	"server/internal/repository"
 	"server/internal/service"
 	"server/pkg/database"
+
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
 	router := routes.GetRouter()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowCredentials = true
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+
+	router.Use(cors.New(config))
 
 	r := httpServer.NewRouter(router)
 
