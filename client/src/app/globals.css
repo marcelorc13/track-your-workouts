@@ -1,2 +1,12 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-prim: #352F44;
+  --color-seg: #5C5470;
+  --color-ter: #B9B4C7;
+  --color-qua: #FAF0E6;
+}
+
+body {
+  @apply h-screen text-qua bg-radial from-seg to-prim
+}
