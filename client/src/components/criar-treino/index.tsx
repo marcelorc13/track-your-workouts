@@ -1,10 +1,10 @@
 'use client'
 
 import { UseReload } from "@/hooks/useReload";
-import { exercicioDTO, treinoDTO, treinoSchema } from "@/schemas/treino";
-import { fetchCreateTreino } from "@/services/treino";
+import { treinoDTO, treinoSchema } from "@/schemas/treino";
+import { fetchCreateTreino } from "@/services/treino/criar-treino";
 import { useMutation } from "@tanstack/react-query";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 const CriarTreinoComponent: React.FC = () => {
@@ -70,7 +70,7 @@ const CriarTreinoComponent: React.FC = () => {
                     <div key={exercicio.id}>
                         <h3>Exercicio {exercicio.id}</h3>
                         <input onChange={(e) => handleChange(exercicio.id, 'nome', e.target.value)} type="text" placeholder="Nome do Exercício" />
-                        <input onChange={(e) => handleChange(exercicio.id, 'series', e.target.value)} type="number" placeholder="N de Séries"/>
+                        <input onChange={(e) => handleChange(exercicio.id, 'series', e.target.value)} type="number" placeholder="N de Séries" />
                     </div>
                 ))}
                 <button type="button" onClick={addExercicio}>Adicionar exercicio</button>

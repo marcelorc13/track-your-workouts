@@ -3,7 +3,7 @@
 import { UseRedirect } from "@/hooks/useRedirect";
 import { UseReload } from "@/hooks/useReload";
 import { cadastroUsuarioDTO, cadastroUsuarioSchema } from "@/schemas/usuarios";
-import { fetchCadastro } from "@/services/cadastro";
+import { fetchCadastro } from "@/services/user/cadastro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";

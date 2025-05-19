@@ -2,7 +2,7 @@
 
 import { UseReload } from '@/hooks/useReload';
 import { loginUsuarioDTO, loginUsuarioSchema } from '@/schemas/usuarios';
-import { fetchLogin } from '@/services/login';
+import { fetchLogin } from '@/services/user/login';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

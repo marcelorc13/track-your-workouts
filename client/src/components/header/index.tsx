@@ -1,7 +1,7 @@
 'use client'
 
 import { UseReload } from "@/hooks/useReload";
-import { logout } from "@/services/logout";
+import { logout } from "@/services/user/logout";
 import Link from "next/link";
 
 const Header: React.FC = () => {
