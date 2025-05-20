@@ -9,15 +9,15 @@ import (
 )
 
 type TreinoRepository struct {
-	Coll *mongo.Collection
+	DB *mongo.Database
 }
 
 func NewTreinoRepository(db *mongo.Database) *TreinoRepository {
-	return &TreinoRepository{db.Collection("treino")}
+	return &TreinoRepository{db}
 }
 
 func (tr TreinoRepository) CreateTreino(t models.Treino) (models.DBResponse, error) {
-	_, err := tr.Coll.InsertOne(context.TODO(), t)
+	_, err := tr.DB.Collection("treino").InsertOne(context.TODO(), t)
 	if err != nil {
 		return models.DBResponse{Message: err.Error()}, err
 	}
@@ -25,7 +25,7 @@ func (tr TreinoRepository) CreateTreino(t models.Treino) (models.DBResponse, err
 }
 
 func (tr TreinoRepository) GetTreinos() (models.DBResponse, error) {
-	cursor, err := tr.Coll.Find(context.TODO(), bson.D{})
+	cursor, err := tr.DB.Collection("treino").Find(context.TODO(), bson.D{})
 	if err != nil {
 		return models.DBResponse{Message: err.Error()}, err
 	}
