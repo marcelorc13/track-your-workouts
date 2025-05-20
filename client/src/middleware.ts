@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { verifyToken } from "./utils/jwt"
+import { getTokenUserID, verifyToken } from "./utils/jwt"
 
 export const middleware = async (req: NextRequest) => {
     const urlAtual = req.nextUrl.pathname
@@ -11,7 +11,7 @@ export const middleware = async (req: NextRequest) => {
     }
 
     if ((urlAtual == '/login' || urlAtual == '/cadastro') && token) {
-        const isValid = await verifyToken(token.value)
+        const isValid = await verifyToken()
         if (!isValid) {
             req.cookies.clear()
             return
@@ -19,7 +19,7 @@ export const middleware = async (req: NextRequest) => {
         return NextResponse.redirect(new URL('/', req.url))
     }
     if (token) {
-        const isValid = await verifyToken(token.value)
+        const isValid = await verifyToken()
         if (!isValid) {
             req.cookies.clear()
             return NextResponse.redirect(new URL('/login', req.url))
