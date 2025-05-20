@@ -30,6 +30,7 @@ const CadastroComponent: React.FC = () => {
     })
 
     const handleCadastro: SubmitHandler<cadastroUsuarioDTO> = (usuario: cadastroUsuarioDTO) => {
+        console.log(usuario)
         const result = cadastroUsuarioSchema.safeParse(usuario)
         if (!result.success) {
             result.error.issues.forEach((err) => {
@@ -49,7 +50,7 @@ const CadastroComponent: React.FC = () => {
         <main>
             <h2>Cadastro</h2>
             <form onSubmit={handleSubmit(handleCadastro)} className="flex flex-col gap-2">
-                <input {...register("nome_completo")} type="text" name="nomeCompleto" id="nomeCompleto" placeholder="Nome Completo" />
+                <input {...register("nome_completo")} type="text" name="nome_completo" id="nome_completo" placeholder="Nome Completo" />
                 <input {...register("username")} type="text" name="username" id="username" placeholder="Username" />
                 <input {...register("email")} type="email" name="email" id="email " placeholder="Email" />
                 <input {...register("senha")} type={!verSenha ? "password" : "text"} name="senha" id="senha" placeholder="Senha" />
