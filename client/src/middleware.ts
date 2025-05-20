@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getTokenUserID, verifyToken } from "./utils/jwt"
+import { verifyToken } from "./utils/jwt"
 
 export const middleware = async (req: NextRequest) => {
     const urlAtual = req.nextUrl.pathname

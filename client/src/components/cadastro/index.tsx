@@ -1,7 +1,6 @@
 'use client'
 
 import { UseRedirect } from "@/hooks/useRedirect";
-import { UseReload } from "@/hooks/useReload";
 import { cadastroUsuarioDTO, cadastroUsuarioSchema } from "@/schemas/usuarios";
 import { fetchCadastro } from "@/services/user/cadastro";
 import { useMutation } from "@tanstack/react-query";
