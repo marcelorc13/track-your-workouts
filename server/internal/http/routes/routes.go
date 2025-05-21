@@ -32,4 +32,5 @@ func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
 
 	treinos.POST("/", th.CreateTreino)
 	treinos.GET("/", th.GetTreinos)
+	treinos.POST("/novaSecao", th.CreateSecao)
 }

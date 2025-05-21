@@ -63,3 +63,42 @@ func (th TreinoHandler) GetTreinos(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: "Todos os treinos do banco", Data: res})
 }
+
+func (th TreinoHandler) CreateSecao(c *gin.Context) {
+	var secao models.Secao
+
+	err := c.BindJSON(&secao)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Não possui token de autorização"})
+		return
+	}
+
+	claims, err := utils.GetTokenClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Token mal formado"})
+		return
+	}
+
+	userId, ok := claims["id"].(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, models.HttpResponse{Status: http.StatusUnauthorized, Message: "Token mal formado"})
+		return
+	}
+
+	secao.IDUsuario = userId
+
+	err = th.service.CreateSecao(secao)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, models.HttpResponse{Status: http.StatusCreated, Message: "Seção de treino criada com sucesso"})
+}

@@ -48,3 +48,23 @@ func (ts TreinoService) GetTreinos() (*[]models.Treino, error) {
 
 	return &treinos, nil
 }
+
+func (ts TreinoService) CreateSecao(s models.Secao) error {
+	validate := validator.New()
+	err := validate.Struct(s)
+	if err != nil {
+		return err.(validator.ValidationErrors)
+	}
+
+	res, err := ts.repository.CreateSecao(s)
+
+	if err != nil {
+		return fmt.Errorf(res.Message)
+	}
+
+	if !res.Success {
+		return fmt.Errorf(res.Message)
+	}
+
+	return nil
+}

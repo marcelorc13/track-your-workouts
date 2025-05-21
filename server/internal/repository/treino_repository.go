@@ -38,3 +38,23 @@ func (tr TreinoRepository) GetTreinos() (models.DBResponse, error) {
 
 	return models.DBResponse{Success: true, Data: res}, nil
 }
+func (tr TreinoRepository) CreateSecao(s models.Secao) (models.DBResponse, error) {
+	var treino models.Treino
+	filtro := bson.M{"_id": s.IDTreino}
+	err := tr.DB.Collection("treino").FindOne(context.TODO(), filtro).Decode(&treino)
+
+	if err == mongo.ErrNoDocuments {
+		return models.DBResponse{Message: "o treino não existe"}, err
+	}
+
+	if err != nil {
+		return models.DBResponse{Message: err.Error()}, err
+	}
+
+	_, err = tr.DB.Collection("secao_de_treino").InsertOne(context.TODO(), s)
+	if err != nil {
+		return models.DBResponse{Message: err.Error()}, err
+	}
+	return models.DBResponse{Success: true}, nil
+
+}
