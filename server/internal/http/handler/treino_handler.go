@@ -67,6 +67,17 @@ func (th TreinoHandler) GetTreinosDoUsuario(c *gin.Context) {
 	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Treinos do usuário %s", usuarioId), Data: res})
 }
 
+func (th TreinoHandler) GetTreinoById(c *gin.Context) {
+	id := c.Param("id")
+
+	res, err := th.service.GetTreinoById(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Treino do id %s", id), Data: res})
+}
+
 func (th TreinoHandler) CreateSecao(c *gin.Context) {
 	var secao models.Secao
 

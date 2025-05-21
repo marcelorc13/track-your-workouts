@@ -49,6 +49,20 @@ func (ts TreinoService) GetTreinosDoUsuario(usuarioId string) (*[]models.Treino,
 	return &treinos, nil
 }
 
+func (ts TreinoService) GetTreinoById(id string) (*models.Treino, error) {
+	res, err := ts.repository.GetTreinoById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	treino, ok := res.Data.(models.Treino)
+	if !ok {
+		return nil, fmt.Errorf("erro ao converter dados")
+	}
+
+	return &treino, nil
+}
+
 func (ts TreinoService) CreateSecao(s models.Secao) error {
 	validate := validator.New()
 	err := validate.Struct(s)

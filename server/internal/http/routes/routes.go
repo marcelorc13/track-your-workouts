@@ -31,6 +31,7 @@ func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
 	treinos.Use(httpServer.Middleware)
 
 	treinos.POST("/", th.CreateTreino)
-	treinos.GET("/:id", th.GetTreinosDoUsuario)
+	treinos.GET("/usuario/:id", th.GetTreinosDoUsuario)
+	treinos.GET("/:id", th.GetTreinoById)
 	treinos.POST("/novaSecao", th.CreateSecao)
 }

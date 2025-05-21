@@ -5,6 +5,7 @@ import (
 	"server/internal/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -38,10 +39,30 @@ func (tr TreinoRepository) GetTreinosDoUsuario(usuarioId string) (models.DBRespo
 
 	return models.DBResponse{Success: true, Data: res}, nil
 }
+
+func (tr TreinoRepository) GetTreinoById(id string) (models.DBResponse, error) {
+	var treino models.Treino
+
+	primtiveId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return models.DBResponse{Message: "erro para converter id para primitive"}, err
+	}
+
+	err = tr.DB.Collection("treino").FindOne(context.TODO(), bson.M{"_id": primtiveId}).Decode(&treino)
+
+	if err == mongo.ErrNoDocuments {
+		return models.DBResponse{Message: "o treino não existe"}, err
+	}
+	if err != nil {
+		return models.DBResponse{Message: err.Error()}, err
+	}
+
+	return models.DBResponse{Success: true, Data: treino}, nil
+}
+
 func (tr TreinoRepository) CreateSecao(s models.Secao) (models.DBResponse, error) {
 	var treino models.Treino
-	filtro := bson.M{"_id": s.IDTreino}
-	err := tr.DB.Collection("treino").FindOne(context.TODO(), filtro).Decode(&treino)
+	err := tr.DB.Collection("treino").FindOne(context.TODO(), bson.M{"_id": s.IDTreino}).Decode(&treino)
 
 	if err == mongo.ErrNoDocuments {
 		return models.DBResponse{Message: "o treino não existe"}, err
