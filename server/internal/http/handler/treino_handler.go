@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"server/internal/models"
 	"server/internal/service"
@@ -55,13 +56,15 @@ func (th TreinoHandler) CreateTreino(c *gin.Context) {
 	c.JSON(http.StatusCreated, models.HttpResponse{Status: http.StatusCreated, Message: "Treino criado com sucesso"})
 }
 
-func (th TreinoHandler) GetTreinos(c *gin.Context) {
-	res, err := th.service.GetTreinos()
+func (th TreinoHandler) GetTreinosDoUsuario(c *gin.Context) {
+	usuarioId := c.Param("id")
+
+	res, err := th.service.GetTreinosDoUsuario(usuarioId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: "Todos os treinos do banco", Data: res})
+	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Treinos do usuário %s", usuarioId), Data: res})
 }
 
 func (th TreinoHandler) CreateSecao(c *gin.Context) {

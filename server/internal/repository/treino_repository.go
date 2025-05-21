@@ -24,8 +24,8 @@ func (tr TreinoRepository) CreateTreino(t models.Treino) (models.DBResponse, err
 	return models.DBResponse{Success: true}, nil
 }
 
-func (tr TreinoRepository) GetTreinos() (models.DBResponse, error) {
-	cursor, err := tr.DB.Collection("treino").Find(context.TODO(), bson.D{})
+func (tr TreinoRepository) GetTreinosDoUsuario(usuarioId string) (models.DBResponse, error) {
+	cursor, err := tr.DB.Collection("treino").Find(context.TODO(), bson.D{{Key: "criado_por", Value: usuarioId}})
 	if err != nil {
 		return models.DBResponse{Message: err.Error()}, err
 	}

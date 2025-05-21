@@ -36,8 +36,8 @@ func (ts TreinoService) CreateTreino(t models.Treino) error {
 	return nil
 }
 
-func (ts TreinoService) GetTreinos() (*[]models.Treino, error) {
-	res, err := ts.repository.GetTreinos()
+func (ts TreinoService) GetTreinosDoUsuario(usuarioId string) (*[]models.Treino, error) {
+	res, err := ts.repository.GetTreinosDoUsuario(usuarioId)
 	if err != nil {
 		return nil, err
 	}
