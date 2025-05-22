@@ -6,6 +6,7 @@ import { fetchCreateTreino } from "@/services/treino/criar-treino";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Treinos from "../treinos";
 
 const CriarTreinoComponent: React.FC = () => {
 
@@ -63,14 +64,16 @@ const CriarTreinoComponent: React.FC = () => {
     }
 
     return (
-        <main>
+        <main className="flex flex-col gap-4">
+            <Treinos />
             <form onSubmit={handleLogin} className="flex flex-col">
+                <h2 className="text-xl font-semibold">Criar Treino</h2>
                 <input onChange={(e) => handleChange(null, 'nome', e.target.value)} type="text" name="nome" id="nome" placeholder="nome" />
                 {treino.exercicios.map(exercicio => (
                     <div key={exercicio.id}>
                         <h3>Exercicio {exercicio.id}</h3>
                         <input onChange={(e) => handleChange(exercicio.id, 'nome', e.target.value)} type="text" placeholder="Nome do Exercício" />
-                        <input onChange={(e) => handleChange(exercicio.id, 'series', e.target.value)} type="number" placeholder="N de Séries" />
+                        <input onChange={(e) => handleChange(exercicio.id, 'series', e.target.value)} type="number" placeholder="N de Séries" min={1} />
                     </div>
                 ))}
                 <button type="button" onClick={addExercicio}>Adicionar exercicio</button>

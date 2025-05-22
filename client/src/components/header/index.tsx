@@ -18,7 +18,7 @@ const Header: React.FC = () => {
         <header className="w-full flex justify-between border-b border-gray-500 py-4">
             <ul className="flex justify-center gap-4">
                 <li><Link href={'/'}>Home</Link></li>
-                <li><Link href={'/criar-treino'}>Treinos</Link></li>
+                <li><Link href={'/treinos'}>Treinos</Link></li>
             </ul>
             <span className="cursor-pointer" onClick={handleLogout}>logout</span>
         </header>

@@ -2,7 +2,7 @@ import { FetchResponseType } from "@/models/response-models"
 import { usuarioDTO } from "@/models/usuario-models"
 import { getTokenUserID } from "@/utils/jwt"
 
-export const fecthGetUsuario = async (): Promise<FetchResponseType<usuarioDTO>> => {
+export const fetchGetUsuario = async (): Promise<FetchResponseType<usuarioDTO>> => {
     const id = await getTokenUserID()
     if (id === "") {
         return {status: 400, message: "Token não encontrado"}

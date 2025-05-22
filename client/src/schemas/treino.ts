@@ -7,6 +7,7 @@ export const exercicioSchema = z.object({
 })
 
 export const treinoSchema = z.object({
+    _id: z.string().nullish(),
     nome: z.string(),
     exercicios: z.array(exercicioSchema)
 })
