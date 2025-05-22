@@ -34,4 +34,5 @@ func (rh RouteHandler) TreinoRoutes(th handler.TreinoHandler) {
 	treinos.GET("/usuario/:id", th.GetTreinosDoUsuario)
 	treinos.GET("/:id", th.GetTreinoById)
 	treinos.POST("/novaSecao", th.CreateSecao)
+	treinos.DELETE("/:id", th.DeleteTreino)
 }

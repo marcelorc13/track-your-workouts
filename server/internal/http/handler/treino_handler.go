@@ -77,6 +77,16 @@ func (th TreinoHandler) GetTreinoById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Treino do id %s", id), Data: res})
 }
+func (th TreinoHandler) DeleteTreino(c *gin.Context) {
+	id := c.Param("id")
+
+	err := th.service.DeleteTreino(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.HttpResponse{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, models.HttpResponse{Status: http.StatusOK, Message: fmt.Sprintf("Treino de id %s deletado com sucesso", id)})
+}
 
 func (th TreinoHandler) CreateSecao(c *gin.Context) {
 	var secao models.Secao

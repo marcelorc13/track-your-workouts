@@ -63,6 +63,15 @@ func (ts TreinoService) GetTreinoById(id string) (*models.Treino, error) {
 	return &treino, nil
 }
 
+func (ts TreinoService) DeleteTreino(id string) error {
+	res, err := ts.repository.DeleteTreino(id)
+	if err != nil {
+		return fmt.Errorf(res.Message)
+	}
+
+	return nil
+}
+
 func (ts TreinoService) CreateSecao(s models.Secao) error {
 	validate := validator.New()
 	err := validate.Struct(s)

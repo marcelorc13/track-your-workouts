@@ -60,6 +60,21 @@ func (tr TreinoRepository) GetTreinoById(id string) (models.DBResponse, error) {
 	return models.DBResponse{Success: true, Data: treino}, nil
 }
 
+func (tr TreinoRepository) DeleteTreino(id string) (models.DBResponse, error) {
+	primtiveId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return models.DBResponse{Message: "erro para converter id para primitive"}, err
+	}
+
+	_, err = tr.DB.Collection("treino").DeleteOne(context.TODO(), bson.M{"_id": primtiveId})
+
+	if err != nil {
+		return models.DBResponse{Message: err.Error()}, err
+	}
+
+	return models.DBResponse{Success: true}, nil
+}
+
 func (tr TreinoRepository) CreateSecao(s models.Secao) (models.DBResponse, error) {
 	var treino models.Treino
 	err := tr.DB.Collection("treino").FindOne(context.TODO(), bson.M{"_id": s.IDTreino}).Decode(&treino)
